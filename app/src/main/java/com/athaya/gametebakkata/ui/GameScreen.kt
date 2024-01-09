@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -22,22 +23,30 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.athaya.gametebakkata.R
 import com.athaya.gametebakkata.ui.theme.GameTebakKataTheme
 
 @Composable
-fun GameScreen() {
+fun GameScreen(
+    gameViewModel: GameViewModel = viewModel()
+) {
+    val gameUiState by gameViewModel.uiState.collectAsState()
     val mediumPadding = dimensionResource(id = R.dimen.padding_medium)
 
     Column(
@@ -53,6 +62,7 @@ fun GameScreen() {
         )
 
         GameLayout(
+            currentScrambledWord = gameUiState.currentScrambledWord,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -108,6 +118,7 @@ fun GameStatus(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameLayout(
+    currentScrambledWord: String,
     modifier: Modifier = Modifier
 ) {
     val mediumPadding = dimensionResource(id = R.dimen.padding_medium)
@@ -131,30 +142,45 @@ fun GameLayout(
                 style = typography.titleMedium,
                 color = colorScheme.onPrimary
             )
-            Text(
+            /*Text(
                 text = "Tebak KATA",
                 style = typography.displayMedium
+            )*/
+            Text(
+                text = currentScrambledWord,
+                fontSize = 45.sp,
+                modifier = modifier.align(Alignment.CenterHorizontally)
             )
             Text(
                 text = stringResource(id = R.string.instructions),
                 textAlign = TextAlign.Center,
                 style = typography.titleMedium
             )
+
             OutlinedTextField(
                 value = "",
                 singleLine = true,
                 shape = shapes.large,
                 modifier = Modifier.fillMaxWidth(),
-                /*   colors = TextFieldDefaults.colors(
-                       focusedContainerColor = colorScheme.surface,
-                       unfocusedContainerColor = colorScheme.surface,
-                       disabledContainerColor = colorScheme.surface,
-                   ),*/
+
+
+                /* ini error colornya
+                colors = TextFieldDefaults.colors(
+                     focusedContainerColor = colorScheme.surface,
+                     unfocusedContainerColor = colorScheme.surface,
+                     disabledContainerColor = colorScheme.surface,
+                 ),*/
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    containerColor = colorScheme.surface
+                ),
                 onValueChange = { },
                 label = {
                     Text(text = stringResource(id = R.string.enter_your_word))
                 },
                 isError = false,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(
                     onDone = { }
                 )
@@ -197,7 +223,7 @@ private fun FinalScoreDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun GameScreenPreview(){
+fun GameScreenPreview() {
     GameTebakKataTheme {
         GameScreen()
     }
