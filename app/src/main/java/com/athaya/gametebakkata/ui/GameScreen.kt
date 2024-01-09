@@ -62,6 +62,9 @@ fun GameScreen(
         )
 
         GameLayout(
+            onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
+            onKeyboardDone = { },
+            userGuess = gameViewModel.userGuess,
             currentScrambledWord = gameUiState.currentScrambledWord,
             modifier = Modifier
                 .fillMaxWidth()
@@ -118,6 +121,9 @@ fun GameStatus(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameLayout(
+    onUserGuessChanged: (String) -> Unit,
+    userGuess: String,
+    onKeyboardDone: () -> Unit,
     currentScrambledWord: String,
     modifier: Modifier = Modifier
 ) {
@@ -158,12 +164,10 @@ fun GameLayout(
             )
 
             OutlinedTextField(
-                value = "",
+                value = userGuess,
                 singleLine = true,
-                shape = shapes.large,
+                // shape = shapes.large,
                 modifier = Modifier.fillMaxWidth(),
-
-
                 /* ini error colornya
                 colors = TextFieldDefaults.colors(
                      focusedContainerColor = colorScheme.surface,
@@ -173,7 +177,7 @@ fun GameLayout(
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = colorScheme.surface
                 ),
-                onValueChange = { },
+                onValueChange = onUserGuessChanged,
                 label = {
                     Text(text = stringResource(id = R.string.enter_your_word))
                 },
@@ -182,7 +186,7 @@ fun GameLayout(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = { }
+                    onDone = { onKeyboardDone() }
                 )
             )
         }
