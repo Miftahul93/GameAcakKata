@@ -71,7 +71,7 @@ class GameViewModel : ViewModel() {
                 currentState.copy(isGuessedWordWrong = true)
             }
         }
-        // Reset user gues
+        // Reset user guess
         updateUserGuess("")
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Game Tebak Kata</string>
+    <string name="app_name">Teka-Teki Kata</string>
 
     <string name="instructions">Unscramble the word using all the letters.</string>
     <string name="skip">Skip</string>

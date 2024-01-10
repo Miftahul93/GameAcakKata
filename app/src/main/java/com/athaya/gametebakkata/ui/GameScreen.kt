@@ -169,7 +169,7 @@ fun GameLayout(
             )*/
             Text(
                 text = currentScrambledWord,
-                fontSize = 45.sp,
+                fontSize = 40.sp,
                 modifier = modifier.align(Alignment.CenterHorizontally)
             )
             Text(
