@@ -104,6 +104,16 @@ fun GameScreen(
         }
 
         GameStatus(score = gameUiState.score, modifier = Modifier.padding(20.dp))
+
+        // Memeriksa kondisi permainan
+        if (gameUiState.isGameOver) {
+            FinalScoreDialog(
+                score = gameUiState.score,
+                onPlayAgain = {
+                    gameViewModel.resetGame()
+                }
+            )
+        }
     }
 }
 
@@ -226,7 +236,7 @@ private fun FinalScoreDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { onPlayAgain }) {
+            TextButton(onClick =  onPlayAgain ) {
                 Text(text = stringResource(id = R.string.play_again))
 
             }
